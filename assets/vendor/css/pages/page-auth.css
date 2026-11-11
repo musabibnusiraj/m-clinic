@@ -19,6 +19,11 @@
   margin-right: 10px;
 }
 
+.app-brand-logo {
+  width: 100px !important;
+  margin-right: 10px;
+}
+
 .authentication-wrapper.authentication-basic {
   overflow: hidden;
   align-items: center;

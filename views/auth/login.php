@@ -15,7 +15,7 @@ require_once __DIR__ . '/../../config.php';
     content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
   <title>M Clinic</title>
-
+  <link rel="icon" type="image/x-icon" href="<?= asset('assets/img/favicon/favicon.ico'); ?>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -24,12 +24,6 @@ require_once __DIR__ . '/../../config.php';
 
   <link rel="stylesheet" href="<?= asset('assets/vendor/css/core.css'); ?>" />
   <link rel="stylesheet" href="<?= asset('assets/vendor/css/pages/page-auth.css'); ?>" />
-  <style>
-    .app-brand-logo {
-      width: 100px;
-      margin-right: 10px;
-    }
-  </style>
 </head>
 
 <body>
