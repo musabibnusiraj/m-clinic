@@ -100,7 +100,7 @@ $doctor = $treatments = $availabilities = [];
                 <a href="#appointments" class="text-gray-700 hover:text-blue-600 font-medium">Appointments</a>
                 <a href="#services" class="text-gray-700 hover:text-blue-600 font-medium">Services</a>
                 <a href="#contact" class="text-gray-700 hover:text-blue-600 font-medium">Contact</a>
-                <a href="app.php" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 rounded-lg text-center transition duration-300">
+                <a href="views/auth/login.php" class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 rounded-lg text-center transition duration-300">
                     Admin
                 </a>
             </nav>
