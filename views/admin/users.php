@@ -1,48 +1,61 @@
-<?php require_once('./layouts/header.php'); ?>
+<?php
+require_once('./layouts/header.php');
+require_once BASE_PATH . '/models/User.php';
+
+$users = (new User())->getAll();
+
+?>
 
 <!-- Content -->
 <div class="container-xxl flex-grow-1 container-p-y">
-  <h1 class="mb-4 btn btn-primary"> Users</h1>
-  <div class="row mb-12 g-6">
-    <div class="col-md-6 col-lg-4">
-      <div class="card h-100">
-        <img class="card-img-top" src="<?= asset('assets/img/elements/2.png'); ?>" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">
-            Some quick example text to build on the card title and make up the bulk of the card's content.
-          </p>
-          <a href="javascript:void(0)" class="btn btn-outline-primary">Go somewhere</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6 col-lg-4">
-      <div class="card h-100">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle">Support card subtitle</h6>
-        </div>
-        <img class="img-fluid" src="<?= asset('assets/img/elements/5.png'); ?>" alt="Card image cap">
-        <div class="card-body">
-          <p class="card-text">Bear claw sesame snaps gummies chocolate.</p>
-          <a href="javascript:void(0);" class="card-link">Card link</a>
-          <a href="javascript:void(0);" class="card-link">Another link</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6 col-lg-4">
-      <div class="card h-100">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <h6 class="card-subtitle">Support card subtitle</h6>
-          <img class="img-fluid d-flex mx-auto my-6 rounded" src="<?= asset('assets/img/elements/4.png'); ?>" alt="Card image cap">
-          <p class="card-text">Bear claw sesame snaps gummies chocolate.</p>
-          <a href="javascript:void(0);" class="card-link">Card link</a>
-          <a href="javascript:void(0);" class="card-link">Another link</a>
-        </div>
-      </div>
+
+  <!-- Hoverable Table rows -->
+  <div class="card">
+    <h5 class="card-header">Users</h5>
+    <div class="table-responsive text-nowrap">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          <?php foreach ($users as $user): ?>
+            <tr>
+              <td>
+                <i class="icon-base bx bx-user-circle icon-md text-success me-4"></i> <span><?= $user['username'] ?? 'N/A'; ?></span>
+              </td>
+              <td><?= $user['email'] ?? 'N/A'; ?></td>
+              <td>
+                <?php if ($user['is_active']): ?>
+                  <span class="badge bg-label-success me-1">Active</span>
+                <?php else: ?>
+                  <span class="badge bg-label-danger me-1">Inactive</span>
+                <?php endif; ?>
+              </td>
+              <td><span class="badge bg-label-primary me-1 text-capitalize"><?= $user['permission'] ?? 'N/A'; ?></span></td>
+              <td>
+                <div class="dropdown">
+                  <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                    <i class="icon-base bx bx-dots-vertical-rounded"></i>
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base bx bx-edit-alt me-1"></i> Edit</a>
+                    <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base bx bx-trash me-1"></i> Delete</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
     </div>
   </div>
+  <!--/ Hoverable Table rows -->
 </div>
 <!-- / Content -->
 
