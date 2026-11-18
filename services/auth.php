@@ -1,5 +1,5 @@
 <?php
-die($_POST['remember'] );
+
 /**
  * Login handler: checks the email and password sent by the login form.
  *
@@ -19,6 +19,7 @@ $loginPage = url('views/auth/login.php');
  */
 function failLogin(SessionManager $sm, $message, $loginPage)
 {
+    dd($message, ' Error in login ');
     $sm->setAttribute('error', $message);
     header('Location: ' . $loginPage);
     exit;
@@ -31,9 +32,11 @@ try {
 
     // Both fields are required
     if ($email === '' || $password === '') {
+
         failLogin($sm, 'Please fill all required fields!', $loginPage);
     }
 
+    // If we get here, all required fields are filled.
     $user = (new User())->getByEmail($email);
 
     // Use the same message for "no such user" and "wrong password"

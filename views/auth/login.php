@@ -1,5 +1,10 @@
 <?php
 require_once __DIR__ . '/../../config.php';
+require_once __DIR__ . '/../../helpers/Auth.php';
+
+if (Auth::isLoggedIn()) {
+  header('Location: ' . url('views/admin/dashboard.php'));
+}
 ?>
 
 

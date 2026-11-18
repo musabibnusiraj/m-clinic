@@ -1,5 +1,12 @@
 <?php
 require_once __DIR__ . '/../../../config.php';
+require_once BASE_PATH . '/helpers/Auth.php';
+
+if (!empty($requireOperator)) {
+    Auth::requireOperator();   // doctors are sent back to the dashboard
+} else {
+    Auth::requireLogin();      // visitors are sent to the login page
+}
 ?>
 
 <!doctype html>
@@ -184,7 +191,7 @@ require_once __DIR__ . '/../../../config.php';
                                         <div class="dropdown-divider my-1"></div>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="javascript:void(0);">
+                                        <a class="dropdown-item" href="<?= url('services/logout.php'); ?>">
                                             <i class="icon-base bx bx-power-off icon-md me-3"></i><span>Log Out</span>
                                         </a>
                                     </li>
