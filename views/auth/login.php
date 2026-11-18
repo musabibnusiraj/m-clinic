@@ -40,14 +40,14 @@ require_once __DIR__ . '/../../config.php';
             <h4 class="mb-1">Welcome to M Clinic</h4>
             <p class="mb-6">Sign in to your account</p>
 
-            <form id="formAuthentication" class="mb-6">
+            <form id="formAuthentication" class="mb-3" action="<?= url('services/auth.php') ?>" method="POST">
               <div class="mb-6">
                 <label for="email" class="form-label">Email or Username</label>
                 <input
                   type="text"
                   class="form-control"
                   id="email"
-                  name="email-username"
+                  name="email"
                   placeholder="Enter your email or username"
                   autofocus />
               </div>
@@ -63,8 +63,8 @@ require_once __DIR__ . '/../../config.php';
               <div class="mb-8">
                 <div class="d-flex justify-content-between">
                   <div class="form-check mb-0">
-                    <input class="form-check-input" type="checkbox" id="remember-me" />
-                    <label class="form-check-label" for="remember-me"> Remember Me </label>
+                    <input class="form-check-input" type="checkbox" id="remember" name="remember" />
+                    <label class="form-check-label" for="remember"> Remember Me </label>
                   </div>
                 </div>
               </div>
