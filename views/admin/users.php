@@ -11,9 +11,19 @@ $users = (new User())->getAll();
 <!-- Content -->
 <div class="container-xxl flex-grow-1 container-p-y">
 
+
   <!-- Hoverable Table rows -->
   <div class="card">
-    <h5 class="card-header">Users</h5>
+    <h5 class="card-header">Users
+      <!-- Button trigger modal -->
+      <button
+        type="button"
+        class="btn btn-primary float-end"
+        data-bs-toggle="modal"
+        data-bs-target="#createNewUser">
+        Add New User
+      </button>
+    </h5>
     <div class="table-responsive text-nowrap">
       <table class="table table-hover">
         <thead>
@@ -61,4 +71,95 @@ $users = (new User())->getAll();
 </div>
 <!-- / Content -->
 
+<!-- Modal -->
+<div class="modal fade" id="createNewUser" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <form id="create-form"
+      action="<?= url('services/user/ajax_fn.php'); ?>"
+      method="POST"
+      enctype="multipart/form-data"
+      class="modal-content">
+
+      <input type="hidden" name="action" value="create">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalCenterTitle">Create New User</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-6">
+          <div class="col-12">
+            <label for="nameWithTitle" class="form-label">Name</label>
+            <input type="text" id="nameWithTitle" name="name" class="form-control" placeholder="Enter Name" required />
+          </div>
+          <div class="col-12">
+            <label for="emailWithTitle" class="form-label">Email</label>
+            <input type="email" id="emailWithTitle" name="email" class="form-control" placeholder="xxxx@xxx.xx" required />
+          </div>
+          <div class="row gy-2">
+            <div class="col form-password-toggle">
+              <label class="form-label" for="passwordInput">Password</label>
+              <div class="input-group">
+                <input
+                  type="password"
+                  required
+                  name="password"
+                  class="form-control"
+                  id="passwordInput"
+                  placeholder="Enter password"
+                  aria-describedby="password-toggle" />
+                <span id="password-toggle" class="input-group-text cursor-pointer">
+                  <i class="bx bx-hide"></i>
+                </span>
+              </div>
+            </div>
+            <div class="col form-password-toggle">
+              <label class="form-label" for="confirmPasswordInput">Confirm Password</label>
+              <div class="input-group">
+                <input
+                  type="password"
+                  required
+                  name="confirm_password"
+                  class="form-control"
+                  id="confirmPasswordInput"
+                  placeholder="Confirm password"
+                  aria-describedby="confirm-password-toggle" />
+                <span id="confirm-password-toggle" class="input-group-text cursor-pointer">
+                  <i class="bx bx-hide"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="roleWithTitle" class="form-label">Role</label>
+            <select id="roleWithTitle" name="permission" class="form-select" required>
+              <option value="" selected disabled>Select role</option>
+              <option value="operator">Operator</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="statusWithTitle" class="form-label">Status</label>
+            <select id="statusWithTitle" name="is_active" class="form-select" required>
+              <option value="1" selected>Active</option>
+              <option value="0">Inactive</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" id="create">Save changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <?php require_once('./layouts/footer.php'); ?>
+<script src="<?= asset('assets/forms-js/users.js') ?>"></script>

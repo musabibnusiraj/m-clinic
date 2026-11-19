@@ -114,7 +114,7 @@ $currentFilename = basename($_SERVER['SCRIPT_NAME']);
 
                     <li class="menu-item <?= $currentFilename === 'appointments.php' ? 'active' : '' ?>">
                         <a href="<?= url('views/admin/appointments.php'); ?>" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-door-open"></i>
+                            <i class="menu-icon tf-icons bx bx-calendar-check"></i>
                             <div class="text-truncate" data-i18n="Boxicons">Appointments
                             </div>
                         </a>
@@ -124,7 +124,7 @@ $currentFilename = basename($_SERVER['SCRIPT_NAME']);
 
                     <li class="menu-item <?= $currentFilename === 'payments.php' ? 'active' : '' ?>">
                         <a href="<?= url('views/admin/payments.php'); ?>" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-door-open"></i>
+                            <i class="menu-icon tf-icons bx bx-credit-card"></i>
                             <div class="text-truncate" data-i18n="Boxicons">Payments
                             </div>
                         </a>
@@ -134,25 +134,23 @@ $currentFilename = basename($_SERVER['SCRIPT_NAME']);
 
                     <li class="menu-item <?= $currentFilename === 'doctor_availability.php' ? 'active' : '' ?>">
                         <a href="<?= url('views/admin/doctor_availability.php'); ?>" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-door-open"></i>
+                            <i class="menu-icon tf-icons bx bx-time-five"></i>
                             <div class="text-truncate" data-i18n="Boxicons">Doctor Availability
                             </div>
                         </a>
                     </li>
 
 
-
-
                     <li class="menu-item <?= $currentFilename === 'doctors.php' ? 'active' : '' ?>">
                         <a href="<?= url('views/admin/doctors.php'); ?>" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-door-open"></i>
+                            <i class="menu-icon tf-icons bx bx-user"></i>
                             <div class="text-truncate" data-i18n="Boxicons">Doctors
                             </div>
                         </a>
                     </li>
                     <li class="menu-item <?= $currentFilename === 'treatments.php' ? 'active' : '' ?>">
                         <a href="<?= url('views/admin/treatments.php'); ?>" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-door-open"></i>
+                            <i class="menu-icon tf-icons bx bx-first-aid"></i>
                             <div class="text-truncate" data-i18n="Boxicons">Treatments
                             </div>
                         </a>

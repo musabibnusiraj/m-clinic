@@ -1,0 +1,334 @@
+
+$(document).ready(function () {
+
+    $('#create').on('click', function () {
+        console.log('Create new user button clicked');
+
+        var form = $('#create-form')[0] ?? null;
+        if (!form) { console.log('Something went wrong..'); return; }
+
+        if (!validatePasswords('passwordInput', 'confirmPasswordInput')) {
+            console.log('Passwords do not match..!');
+            showAlert('Passwords do not match..!', 'danger'); // Prevent form submission if passwords do not match
+            return;
+        }
+
+        var url = $('#create-form').attr('action');
+
+        if (form.checkValidity() && form.reportValidity()) {
+
+
+            var formData = new FormData(form);
+            console.log('Form data to be sent:', formData);
+            // Perform AJAX request
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData,
+                contentType: false, // Don't set content type
+                processData: false, // Don't process the data
+                dataType: 'json',
+                success: function (response) {
+                    showAlert(response.message, response.success ? 'success' : 'danger');
+                    if (response.success) {
+                        setTimeout(function () {
+                            $('#createNewUser').modal('hide');
+                            location.reload();
+                        }, 1000);
+                    }
+                },
+                error: function (error) {
+                    // Handle the error
+                    console.error('Error submitting the form:', error);
+                    showAlert('Something went wrong..!', 'danger');
+                },
+                complete: function (response) {
+                    // This will be executed regardless of success or error
+                    console.log('Request complete:', response);
+
+                }
+            });
+
+
+        } else {
+            showAlert('Form is not valid. Please check your inputs.', 'danger');
+        }
+    });
+
+    // Trigger change event on page load if doctor permission is selected by default
+    if ($('#permission, #edit_permission').val() === 'doctor') {
+        $('#permission, #edit_permission').trigger('change');
+    }
+
+    $('#permission').change(function () {
+        var permission = $(this).val();
+        if (permission === 'doctor') {
+            $('#additional-fields').html(
+                '<div class="row mt-2">' +
+                '<div class="col-12 mb-3">' +
+                '<label for="name" class="form-label">Doctor Name</label>' +
+                '<input type="text" id="name" name="doctor_name" class="form-control" placeholder="Enter Name" required />' +
+                '</div>' +
+                '<div class="col-12 mb-3">' +
+                '<label for="about" class="form-label">About Doctor</label>' +
+                '<textarea id="about" name="about_doctor" class="form-control" placeholder="Enter About" required></textarea>' +
+                '</div>' +
+                '<div class="col-12 mb-3">' +
+                '<label for="formFile" class="form-label">Doctor Photo</label>' +
+                '<input class="form-control" name="image" id="image" type="file" accept="image/*">' +
+                '</div>' +
+                '</div>'
+            );
+        } else {
+            $('#additional-fields').empty();
+        }
+    });
+
+    function validatePasswords(class1, class2) {
+        if ($('#' + class1).val() === $('#' + class2).val()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+    $('.edit-user-btn').on('click', async function () {
+        var user_id = $(this).data('id');
+        await getUserById(user_id);
+    })
+
+    // use bootstrap modal rather than native confirm
+    $('.delete-user-btn').on('click', function () {
+        var user_id = $(this).data('id');
+        var permission = $(this).data('permission');
+
+        // set modal hidden inputs so confirm button can read them
+        $('#delete_user_id').val(user_id);
+        $('#delete_user_permission').val(permission);
+
+        // clear any previous alerts
+        $('#delete-alert-container').empty();
+
+        // show the modal
+        var deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+        deleteModal.show();
+    })
+
+    $('#update-user').on('click', function () {
+        if (!validatePasswords('password', 'confirm-password')) {
+            showAlert('Passwords do not match..!', 'danger', 'edit-alert-container'); // Prevent form submission if passwords do not match
+            return;
+        }
+        //
+        // Get the form element
+        var form = $('#update-form')[0];
+        form.reportValidity();
+
+        // Check form validity
+        if (form.checkValidity()) {
+            // Serialize the form data
+            var url = $('#update-form').attr('action');
+            var formData = new FormData($('#update-form')[0]);
+
+            // Perform AJAX request
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData, // Form data
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    showAlert(response.message, response.success ? 'primary' : 'danger', 'edit-alert-container');
+                    if (response.success) {
+                        $('#edit-user-modal').modal('hide');
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    }
+                },
+                error: function (error) {
+                    // Handle the error
+                    console.error('Error submitting the form:', error);
+                },
+                complete: function (response) {
+                    // This will be executed regardless of success or error
+                    console.log('Request complete:', response);
+                }
+            });
+        } else {
+            var message = ('Form is not valid. Please check your inputs.');
+            showAlert(message, 'danger');
+        }
+    });
+
+    $('#edit_permission').change(function () {
+        var permission = $(this).val();
+        if (permission === 'doctor') {
+            $('#edit-additional-fields').html(
+                '<div class="row mt-2">' +
+                '<div class="col-12 mb-3">' +
+                '<label for="name" class="form-label">Doctor Name</label>' +
+                '<input type="text" id="edit_name" name="doctor_name" class="form-control" placeholder="Enter Name" required />' +
+                '</div>' +
+                '<div class="col-12 mb-3">' +
+                '<label for="about" class="form-label">About Doctor</label>' +
+                '<textarea id="edit_about" name="about_doctor" class="form-control" placeholder="Enter About" required></textarea>' +
+                '</div>' +
+                '<div class="col-12 mb-3">' +
+                '<label for="formFile" class="form-label">Doctor Photo</label>' +
+                '<input class="form-control" name="image" id="edit_image" type="file" accept="image/*">' +
+                '</div>' +
+                '</div>'
+            );
+        } else {
+            $('#edit-additional-fields').empty();
+        }
+    });
+
+});
+
+async function getUserById(id) {
+    var url = $('#update-form').attr('action');
+    $('#edit-additional-fields').empty();
+
+    // Perform AJAX request
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {
+            user_id: id,
+            action: 'get_user'
+        }, // Form data
+        dataType: 'json',
+        success: function (response) {
+            console.log(response);
+
+            showAlert(response.message, response.success ? 'primary' : 'danger');
+            if (response.success) {
+                var user_id = response.data.id;
+                var username = response.data.username;
+                var email = response.data.email;
+                var permission = response.data.permission;
+                var is_active = response.data.is_active;
+
+                var doctorName = response.data.name;
+                var doctorId = response.data.doctor_id;
+                var doctorPhoto = response.data.photo;
+                var doctorAbout = response.data.about;
+
+                $('#editUserModel #user_id').val(user_id);
+                $('#editUserModel #user-name').val(username);
+                $('#editUserModel #email').val(email);
+                $('#editUserModel #edit_permission option[value="' + permission + '"]').prop('selected', true);
+                $('#editUserModel #is_active option[value="' + is_active + '"]').prop('selected', true);
+
+                if (permission === 'doctor') {
+
+                    const domain = $('meta[name="domain"]').attr('content'); // Fetch domain from <meta> tag
+                    const doctorPhotoPath = domain + '/assets/uploads/';
+
+                    $('#edit-additional-fields').html(
+                        ' <input type="hidden" id="doctor_id" name="doctor_id" value="' + doctorId + '"></input>' +
+                        '<div class="row mt-2">' +
+                        '<div class="col-12 mb-3">' +
+                        '<label for="name" class="form-label">Doctor Name</label>' +
+                        '<input type="text" id="name" value="' + doctorName + '" name="doctor_name" class="form-control" placeholder="Enter Name" required />' +
+                        '</div>' +
+                        '<div class="col-12 mb-3">' +
+                        '<label for="about" class="form-label">About Doctor</label>' +
+                        '<textarea id="about" name="about_doctor" class="form-control" placeholder="Enter About" required>' + doctorAbout + '</textarea>' +
+                        '</div>' +
+                        '<div class="col-12 mb-3">' +
+                        '<label for="formFile" class="form-label">Doctor Photo</label>' +
+                        '<input class="form-control" name="image" id="image" type="file" accept="image/*">' +
+                        '</div>' +
+                        '<div class="col-12 mb-3">' +
+                        '<label for="formFile" class="form-label">Doctor Photo</label>' +
+                        // Display current photo if available, or default image
+                        (doctorPhoto ?
+                            '<img src="' + doctorPhotoPath + doctorPhoto + '" alt="user-avatar" class="d-block rounded m-3" width="80" id="uploadedAvatar">' :
+                            '<img src="assets/img/avatars/1.png" alt="user-avatar" class="d-block rounded m-3" width="80" id="uploadedAvatar">'
+                        ) +
+                        '</div>'
+                    );
+                } else {
+                    $('#edit-additional-fields').empty();
+                }
+                //
+                $('#editUserModel').modal('show');
+            }
+        },
+        error: function (error) {
+            // Handle the error
+            console.error('Error submitting the form:', error);
+        },
+        complete: function (response) {
+            // This will be executed regardless of success or error
+            console.log('Request complete:', response);
+        }
+    });
+}
+
+
+async function deleteById(id, permission) {
+    var url = $('#create-form').attr('action');
+
+    // Perform AJAX request
+    return $.ajax({
+        url: url,
+        type: 'POST',
+        data: {
+            user_id: id,
+            action: 'delete_user',
+            permission: permission
+        }, // Form data
+        dataType: 'json',
+        success: function (response) {
+            if (response.success) {
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            } else {
+                showAlert(response.message, response.success ? 'primary' : 'danger', 'delete-alert-container');
+            }
+        },
+        error: function (error) {
+            // Handle the error
+            console.error('Error submitting the form:', error);
+        },
+        complete: function (response) {
+            // This will be executed regardless of success or error
+            console.log('Request complete:', response);
+        }
+    });
+}
+
+// handle confirm delete button in modal
+$('#confirmDeleteBtn').on('click', async function () {
+    var userId = $('#delete_user_id').val();
+    var permission = $('#delete_user_permission').val();
+    if (!userId) {
+        showAlert('Invalid user id.', 'danger', 'delete-alert-container');
+        return;
+    }
+
+    // disable button to prevent duplicate clicks
+    var $btn = $(this);
+    $btn.prop('disabled', true).text('Deleting...');
+
+    // deleteById() method, which now returns the jqXHR promise
+    var ajax = deleteById(userId, permission);
+    ajax.done(function (response) {
+        // modal will stay open if operation failed; otherwise page reload happens from deleteById
+        if (!response.success) {
+            // show the alert (deleteById already does this); re-enable button to let user retry
+            $btn.prop('disabled', false).text('Delete');
+        }
+    }).fail(function (jqXHR) {
+        showAlert('Something went wrong..!', 'danger', 'delete-alert-container');
+        $btn.prop('disabled', false).text('Delete');
+    });
+});
