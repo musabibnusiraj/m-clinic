@@ -7,6 +7,10 @@ if (!empty($requireOperator)) {
 } else {
     Auth::requireLogin();      // visitors are sent to the login page
 }
+
+// Name of the current file, used to highlight the active menu item (e.g. "dashboard.php")
+$currentFilename = basename($_SERVER['SCRIPT_NAME']);
+
 ?>
 
 <!doctype html>
@@ -92,21 +96,23 @@ if (!empty($requireOperator)) {
 
                 <ul class="menu-inner py-1">
                     <!-- Dashboards -->
-                    <li class="menu-item">
+                    <li class="menu-item <?= $currentFilename === 'dashboard.php' ? 'active' : '' ?>">
                         <a href="<?= url('views/admin/dashboard.php'); ?>" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-smile"></i>
                             <div class="text-truncate" data-i18n="Dashboards">Dashboards</div>
                         </a>
                     </li>
 
-                    <li class="menu-item ">
-                        <a href="<?= url('views/admin/booking.php'); ?>" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-run"></i>
-                            <div class="text-truncate" data-i18n="Boxicons">Booking</div>
-                        </a>
-                    </li>
+                    <?php if (Auth::isOperator()) : ?>
+                        <li class="menu-item <?= $currentFilename === 'booking.php' ? 'active' : '' ?>">
+                            <a href="<?= url('views/admin/booking.php'); ?>" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-run"></i>
+                                <div class="text-truncate" data-i18n="Boxicons">Booking</div>
+                            </a>
+                        </li>
+                    <?php endif; ?>
 
-                    <li class="menu-item">
+                    <li class="menu-item <?= $currentFilename === 'appointments.php' ? 'active' : '' ?>">
                         <a href="<?= url('views/admin/appointments.php'); ?>" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-door-open"></i>
                             <div class="text-truncate" data-i18n="Boxicons">Appointments
@@ -114,12 +120,55 @@ if (!empty($requireOperator)) {
                         </a>
                     </li>
 
-                    <li class="menu-item">
-                        <a href="<?= url('views/admin/users.php'); ?>" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-smile"></i>
-                            <div class="text-truncate" data-i18n="Boxicons">Users</div>
+
+
+                    <li class="menu-item <?= $currentFilename === 'payments.php' ? 'active' : '' ?>">
+                        <a href="<?= url('views/admin/payments.php'); ?>" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-door-open"></i>
+                            <div class="text-truncate" data-i18n="Boxicons">Payments
+                            </div>
                         </a>
                     </li>
+
+
+
+                    <li class="menu-item <?= $currentFilename === 'doctor_availability.php' ? 'active' : '' ?>">
+                        <a href="<?= url('views/admin/doctor_availability.php'); ?>" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-door-open"></i>
+                            <div class="text-truncate" data-i18n="Boxicons">Doctor Availability
+                            </div>
+                        </a>
+                    </li>
+
+
+
+
+                    <li class="menu-item <?= $currentFilename === 'doctors.php' ? 'active' : '' ?>">
+                        <a href="<?= url('views/admin/doctors.php'); ?>" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-door-open"></i>
+                            <div class="text-truncate" data-i18n="Boxicons">Doctors
+                            </div>
+                        </a>
+                    </li>
+                    <li class="menu-item <?= $currentFilename === 'treatments.php' ? 'active' : '' ?>">
+                        <a href="<?= url('views/admin/treatments.php'); ?>" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-door-open"></i>
+                            <div class="text-truncate" data-i18n="Boxicons">Treatments
+                            </div>
+                        </a>
+                    </li>
+
+
+
+                    <?php if (Auth::isOperator()) : ?>
+                        <li class="menu-item <?= $currentFilename === 'users.php' ? 'active' : '' ?>">
+                            <a href="<?= url('views/admin/users.php'); ?>" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-smile"></i>
+                                <div class="text-truncate" data-i18n="Boxicons">Users</div>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
 
                 </ul>
             </aside>
@@ -160,35 +209,11 @@ if (!empty($requireOperator)) {
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
-                                                    <h6 class="mb-0">John Doe</h6>
-                                                    <small class="text-body-secondary">Admin</small>
+                                                    <h6 class="mb-0"><?= Auth::username(); ?></h6>
+                                                    <small class="text-body-secondary text-capitalize"><?= Auth::permission(); ?></small>
                                                 </div>
                                             </div>
                                         </a>
-                                    </li>
-                                    <li>
-                                        <div class="dropdown-divider my-1"></div>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="icon-base bx bx-user icon-md me-3"></i><span>My Profile</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="icon-base bx bx-cog icon-md me-3"></i><span>Settings</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <span class="d-flex align-items-center align-middle">
-                                                <i class="flex-shrink-0 icon-base bx bx-credit-card icon-md me-3"></i><span class="flex-grow-1 align-middle">Billing Plan</span>
-                                                <span class="flex-shrink-0 badge rounded-pill bg-danger">4</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div class="dropdown-divider my-1"></div>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" href="<?= url('services/logout.php'); ?>">

@@ -1,4 +1,6 @@
 <?php
+$requireOperator = true; // Only operators can open this page
+
 require_once('./layouts/header.php');
 require_once BASE_PATH . '/models/User.php';
 

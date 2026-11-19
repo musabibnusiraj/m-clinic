@@ -24,6 +24,12 @@ class Auth
         return AppManager::getSM()->getAttribute('userId');
     }
 
+    public static function username()
+    {
+        return AppManager::getSM()->getAttribute('username');
+    }
+
+
     /**
      * Returns the logged-in user's permission: 'operator' or 'doctor'.
      */
