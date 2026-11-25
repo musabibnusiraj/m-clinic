@@ -51,7 +51,7 @@ $(document).ready(function () {
 
     $('.delete-treatment-btn').on('click', async function () {
         var id = $(this).data('id');
-
+     
         $('#deleteConfirmModal #delete_treatment_id').val(id);
         $('#deleteConfirmModal').modal('show');
 
@@ -173,6 +173,7 @@ async function deleteById(id) {
         dataType: 'json',
         success: function (response) {
             if (response.success) {
+                
                 setTimeout(function () {
                     $('#confirmDeleteBtn').prop('disabled', false).text('Delete');
                     location.reload();

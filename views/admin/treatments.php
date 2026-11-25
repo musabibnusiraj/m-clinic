@@ -55,8 +55,8 @@ $treatments = (new Treatment())->getAll();
                     <i class="icon-base bx bx-dots-vertical-rounded"></i>
                   </button>
                   <div class="dropdown-menu">
-                    <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base bx bx-edit-alt me-1"></i> Edit</a>
-                    <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base bx bx-trash me-1"></i> Delete</a>
+                    <a class="dropdown-item edit-treatment-btn" href="javascript:void(0);" data-id="<?= $treatment['id']; ?>"><i class="icon-base bx bx-edit-alt me-1"></i> Edit</a>
+                    <a class="dropdown-item delete-treatment-btn" href="javascript:void(0);" data-id="<?= $treatment['id']; ?>"><i class="icon-base bx bx-trash me-1"></i> Delete</a>
                   </div>
                 </div>
               </td>
@@ -127,6 +127,83 @@ $treatments = (new Treatment())->getAll();
         <button type="button" class="btn btn-primary" id="create">Save changes</button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- Edit Treatment Modal -->
+<div class="modal fade" id="edit-treatment-modal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <form id="update-form"
+      action="<?= url('services/treatment/ajax_fn.php'); ?>"
+      method="POST"
+      class="modal-content">
+
+      <input type="hidden" name="action" value="update_treatment">
+      <input type="hidden" name="id" id="id">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Treatment</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-6">
+          <div class="col-12">
+            <label for="edit_name" class="form-label">Name</label>
+            <input type="text" id="edit_name" name="name" class="form-control" placeholder="Enter Name" required />
+          </div>
+          <div class="col-12">
+            <label for="edit_description" class="form-label">Description</label>
+            <textarea id="edit_description" name="description" class="form-control" placeholder="Enter Description" required></textarea>
+          </div>
+          <div class="col-12">
+            <label for="edit_treatment_fee" class="form-label">Treatment Fee</label>
+            <input type="number" id="edit_treatment_fee" name="treatment_fee" class="form-control" placeholder="Enter Treatment Fee" required />
+          </div>
+          <div class="col-12">
+            <label for="edit_registration_fee" class="form-label">Registration Fee</label>
+            <input readonly type="number" id="edit_registration_fee" name="registration_fee" class="form-control" required />
+          </div>
+          <div class="col-md-6">
+            <label for="edit_is_active" class="form-label">Status</label>
+            <select id="edit_is_active" name="is_active" class="form-select" required>
+              <option value="1">Active</option>
+              <option value="0">Inactive</option>
+            </select>
+          </div>
+          <div id="edit-alert-container"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="update-treatment">Save changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Delete confirmation modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this treatment?</p>
+        <div id="delete-alert-container"></div>
+        <!-- hidden fields to store id and permission so JS can read them -->
+        <input type="hidden" id="delete_treatment_id" value="">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+      </div>
+    </div>
   </div>
 </div>
 
