@@ -155,6 +155,24 @@ async function getById(id) {
     });
 }
 
+function showToast(message, type = 'success') {
+    var $container = $('#toast-container');
+    if (!$container.length) {
+        $container = $('<div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:2000"></div>').appendTo('body');
+    }
+    var $toast = $(
+        '<div class="bs-toast toast fade bg-' + type + '" role="alert" aria-live="assertive" aria-atomic="true">' +
+        '<div class="toast-body text-white d-flex justify-content-between align-items-center">' +
+        '<span></span><button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="toast" aria-label="Close"></button>' +
+        '</div></div>'
+    );
+    $toast.find('span').text(message);
+    $container.append($toast);
+    var toast = new bootstrap.Toast($toast[0], { delay: 3000 });
+    $toast.on('hidden.bs.toast', function () { $toast.remove(); });
+    toast.show();
+}
+
 async function deleteById(id) {
 
     // disable button to prevent duplicate clicks
@@ -173,19 +191,23 @@ async function deleteById(id) {
         dataType: 'json',
         success: function (response) {
             if (response.success) {
-                
+                $('#deleteConfirmModal').modal('hide');
+                showToast(response.message || 'Treatment deleted successfully', 'success');
                 setTimeout(function () {
                     $('#confirmDeleteBtn').prop('disabled', false).text('Delete');
                     location.reload();
 
-                }, 1000);
+                }, 1500);
             } else {
+                $('#confirmDeleteBtn').prop('disabled', false).text('Delete');
                 showAlert(response.message, response.success ? 'primary' : 'danger', 'delete-alert-container');
             }
         },
         error: function (error) {
             // Handle the error
             console.error('Error submitting the form:', error);
+            $('#confirmDeleteBtn').prop('disabled', false).text('Delete');
+            showToast('Something went wrong..!', 'danger');
         },
         complete: function (response) {
             // This will be executed regardless of success or error
