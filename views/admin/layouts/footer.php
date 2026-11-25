@@ -3,34 +3,12 @@
     <div class="container-xxl">
         <div
             class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
-            <div class="mb-2 mb-md-0">
+            <div class="mb-2 mb-md-0 w-100 d-flex flex-md-column flex-row align-items-center justify-content-center">
                 &#169;
                 <script>
                     document.write(new Date().getFullYear());
                 </script>
                 , made with ❤️ by M-Clinic
-            </div>
-            <div class="d-none d-lg-inline-block">
-                <a
-                    href="https://themeselection.com/item/category/admin-templates/"
-                    target="_blank"
-                    class="footer-link me-4">Admin Templates</a>
-
-                <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a>
-                <a
-                    href="https://themeselection.com/item/category/bootstrap-admin-templates/"
-                    target="_blank"
-                    class="footer-link me-4">Bootstrap Dashboard</a>
-
-                <a
-                    href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/documentation/"
-                    target="_blank"
-                    class="footer-link me-4">Documentation</a>
-
-                <a
-                    href="https://github.com/themeselection/sneat-bootstrap-html-admin-template-free/issues"
-                    target="_blank"
-                    class="footer-link">Support</a>
             </div>
         </div>
     </div>
@@ -72,7 +50,15 @@
 <!-- Page JS -->
 <script src="<?= asset('assets/js/dashboards-analytics.js'); ?>"></script>
 
-
+<script>
+    // Function to display a Bootstrap alert
+    function showAlert(message, alertType, id = "alert-container") {
+        var alertContainer = $('#' + id);
+        var alert = $('<div class="alert alert-' + alertType + ' alert-dismissible fade show" role="alert">' + message +
+            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
+        alertContainer.html(alert);
+    }
+</script>
 </body>
 
 </html>

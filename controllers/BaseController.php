@@ -51,11 +51,11 @@ abstract class BaseController
 
             $action = $this->data['action'] ?? '';
             $routes = $this->routes();
-
+           
             if (!isset($routes[$httpMethod][$action])) {
                 JsonResponse::error('Invalid request.');
             }
-
+          
             $methodName = $routes[$httpMethod][$action];
             $this->$methodName();
         } catch (InvalidArgumentException $e) {

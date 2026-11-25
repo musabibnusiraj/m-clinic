@@ -13,7 +13,16 @@ $treatments = (new Treatment())->getAll();
 
   <!-- Hoverable Table rows -->
   <div class="card">
-    <h5 class="card-header">Treatments</h5>
+    <h5 class="card-header">Treatments
+      <!-- Button trigger modal -->
+      <button
+        type="button"
+        class="btn btn-primary float-end"
+        data-bs-toggle="modal"
+        data-bs-target="#createNewTreatment">
+        Add New Treatment
+      </button>
+    </h5>
     <div class="table-responsive text-nowrap">
       <table class="table table-hover">
         <thead>
@@ -28,8 +37,8 @@ $treatments = (new Treatment())->getAll();
         <tbody class="table-border-bottom-0">
           <?php foreach ($treatments as $treatment): ?>
             <tr>
-              <td  class="fw-bold">
-                <i class="icon-base bx bx-check-circle icon-md text-success me-4"></i> <span ><?= $treatment['name'] ?? 'N/A'; ?></span>
+              <td class="fw-bold">
+                <i class="icon-base bx bx-check-circle icon-md text-success me-4"></i> <span><?= $treatment['name'] ?? 'N/A'; ?></span>
               </td>
               <td><?= $treatment['description'] ?? 'N/A'; ?></td>
               <td class="fw-bold">LKR <?= $treatment['treatment_fee'] ?? 'N/A'; ?></td>
@@ -61,4 +70,66 @@ $treatments = (new Treatment())->getAll();
 </div>
 <!-- / Content -->
 
+
+<!-- Modal -->
+<div class="modal fade" id="createNewTreatment" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <form id="create-form"
+      action="<?= url('services/treatment/ajax_fn.php'); ?>"
+      method="POST"
+      enctype="multipart/form-data"
+      class="modal-content">
+
+      <input type="hidden" name="action" value="create_treatment">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalCenterTitle">Create New Treatment</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-6">
+          <div class="col-12">
+            <label for="nameWithTitle" class="form-label">Name</label>
+            <input type="text" id="nameWithTitle" name="name" class="form-control" placeholder="Enter Name" required />
+          </div>
+          <div class="col-12">
+            <label for="descriptionWithTitle" class="form-label">Description</label>
+            <textarea id="descriptionWithTitle" name="description" class="form-control" placeholder="Enter Description" required></textarea>
+          </div>
+          <div class="col-12">
+            <label for="treatmentFeeWithTitle" class="form-label">Treatment Fee</label>
+            <input type="number" id="treatmentFeeWithTitle" name="treatment_fee" class="form-control" placeholder="Enter Treatment Fee" required />
+          </div>
+          <div class="col-12">
+            <label for="registrationFeeWithTitle" class="form-label">Registration Fee</label>
+            <input readonly type="number" value="1000" id="registrationFeeWithTitle" name="registration_fee" class="form-control" placeholder="Enter Registration Fee" required />
+          </div>
+          <input type="hidden" name="registration_fee" value="1000" />
+          <div class="col-md-6">
+            <label for="statusWithTitle" class="form-label">Status</label>
+            <select id="statusWithTitle" name="is_active" class="form-select" required>
+              <option value="1" selected>Active</option>
+              <option value="0">Inactive</option>
+            </select>
+          </div>
+          <div id="alert-container"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+
+        <button type="button" class="btn btn-primary" id="create">Save changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <?php require_once('./layouts/footer.php'); ?>
+
+<script src="<?= asset('assets/forms-js/treatments.js') ?>"></script>

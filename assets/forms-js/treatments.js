@@ -17,9 +17,10 @@ $(document).ready(function () {
                 processData: false, // Don't process the data
                 dataType: 'json',
                 success: function (response) {
-                    showAlert(response.message, response.success ? 'primary' : 'danger');
+                    console.log('Response from server:', response);
+                    showAlert(response.message, response.success ? 'success' : 'danger');
                     if (response.success) {
-                        $('#createTreatmentModal').modal('hide');
+                        $('#createNewTreatment').modal('hide');
                         setTimeout(function () {
                             location.reload();
                         }, 1000);
